@@ -6,6 +6,7 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/recipe', RecipeController::class);
-
 Route::prefix('easycooking')->name('easycooking.')->group(function () {
     Route::get('/homedata', [EasyCookingApiController::class, 'getHomeData'])->name('homedata');
     Route::get('/recipes', [EasyCookingApiController::class, 'getRecipe'])->name('recipeslist');
@@ -33,3 +32,21 @@ Route::prefix('easycooking')->name('easycooking.')->group(function () {
 
 
 Route::post('/sync-data', [ApiController::class, 'syncData'])->name('syncdata')->middleware('api_key');
+
+// Public routes of authtication
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
+});
+
+// Protected routes of product and logout
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/loginusers', [AuthController::class, 'loginusers']);
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('/products', 'store');
+        Route::post('/products/{id}', 'update');
+        Route::delete('/products/{id}', 'destroy');
+    });
+});
