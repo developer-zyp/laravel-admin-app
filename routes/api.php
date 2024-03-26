@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\easycooking\CommentController;
+use App\Http\Controllers\easycooking\LikeController;
+use App\Http\Controllers\easycooking\PostController;
 use App\Http\Controllers\EasyCookingApiController;
-use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -41,6 +42,8 @@ Route::controller(AuthController::class)->group(function () {
 
 // Protected routes of product and logout
 Route::middleware('auth:sanctum')->group(function () {
+
+    // User
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/loginusers', [AuthController::class, 'loginusers']);
 
@@ -49,4 +52,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/products/{id}', 'update');
         Route::delete('/products/{id}', 'destroy');
     });
+
+    // Post
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::get('/posts/{id}', [PostController::class, 'show']);
+    Route::put('/posts/{id}', [PostController::class, 'update']);
+    Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+    // Comment
+    Route::get('/posts/{id}/comments', [CommentController::class, 'index']);
+    Route::post('/posts/{id}/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{id}', [CommentController::class, 'update']);
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+    // Like
+    Route::get('/posts/{id}/likes', [LikeController::class, 'likeorunlike']);
+
 });

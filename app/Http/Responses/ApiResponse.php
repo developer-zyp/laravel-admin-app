@@ -8,12 +8,14 @@ class ApiResponse
     public $message;
     public $data;
     public $total;
+    public $error;
 
-    public function __construct($status, $message = '', $data = [], $total = 0)
+    public function __construct($status, $message = '', $data = [], $total = 0, $error = '')
     {
         $this->status = $status;
         $this->message = $message;
         $this->data = $data;
         $this->total = $total;
+        $this->error = $error;
     }
 }
