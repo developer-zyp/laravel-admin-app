@@ -30,7 +30,6 @@ class AuthController extends Controller
         $data['user'] = $user;
 
         $response = new ApiResponse(true, 'User is created successfully.', $data);
-
         return response()->json($response);
     }
 
@@ -51,7 +50,6 @@ class AuthController extends Controller
         $data['user'] = auth()->user();
 
         $response = new ApiResponse(true, 'User is logged in successfully.', $data);
-
         return response()->json($response);
     }
 
@@ -65,10 +63,9 @@ class AuthController extends Controller
         return response()->json($response, 200);
     }
 
-    public function loginusers()
+    public function loginuser()
     {
         $response = new ApiResponse(true, 'User is logged out successfully.', auth()->user());
-
         return response()->json($response, 200);
     }
 

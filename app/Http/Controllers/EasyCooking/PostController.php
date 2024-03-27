@@ -70,12 +70,13 @@ class PostController extends Controller
         }
 
         $attr = $request->validate([
-            "title" => "require|string",
+            "title" => "required|string",
+            "content" => "nullable|string",
         ]);
 
-        $post = Post::update([$attr]);
+        $post->update($attr);
 
-        $response = new ApiResponse(true, "Post created.", $post);
+        $response = new ApiResponse(true, "Post updated.", $post);
         return response()->json($response);
 
     }
