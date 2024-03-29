@@ -69,12 +69,21 @@ class PostController extends Controller
             return response()->json($response, 403);
         }
 
-        $attr = $request->validate([
-            "title" => "required|string",
-            "content" => "nullable|string",
+        $validator = Validator::make($request->all(), [
+            "title" => "required",
         ]);
 
-        $post->update($attr);
+        if ($validator->fails()) {
+            $response = new ApiResponse(false, "Validation failed.", error: $validator->errors()->all());
+            return response()->json($response, 422);
+        }
+
+        // $attr = $request->validate([
+        //     "title" => "required|string",
+        //     "content" => "nullable|string",
+        // ]);
+
+        $post->update($request->all());
 
         $response = new ApiResponse(true, "Post updated.", $post);
         return response()->json($response);
