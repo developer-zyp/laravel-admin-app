@@ -13,7 +13,12 @@ class PostController extends Controller
     // index
     public function index()
     {
-        $posts = Post::orderBy("created_at", "desc")->with("user:id,name,image")->withCount("comments", "likes")->get(); //->paginate(10);
+        $posts = Post::orderBy("created_at", "desc")->with("user:id,name,image")->withCount("comments", "likes")
+            ->with('likes', function ($like) {
+                return $like->where('user_id', auth()->user()->id)
+                    ->select('id', 'user_id', 'post_id')->get();
+            })
+            ->get(); //->paginate(10);
 
         $response = new ApiResponse(true, "posts", $posts);
         return response()->json($response);
@@ -45,8 +50,11 @@ class PostController extends Controller
             return response()->json($response, 422);
         }
 
+        $imageUrl = $this->saveImage($request->image, 'posts');
+
         $attr = $request->all();
         $attr['user_id'] = auth()->user()->id;
+        $attr['image'] = $imageUrl;
 
         $post = Post::create($attr);
 

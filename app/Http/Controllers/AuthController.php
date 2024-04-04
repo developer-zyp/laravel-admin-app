@@ -21,7 +21,7 @@ class AuthController extends Controller
 
         //create user
         $user = User::create([
-            'name' =>  $attr['name'],
+            'name' => $attr['name'],
             'email' => $attr['email'],
             'password' => bcrypt($attr['password']),
         ]);
@@ -67,6 +67,24 @@ class AuthController extends Controller
     {
         $response = new ApiResponse(true, 'User is logged out successfully.', auth()->user());
         return response()->json($response, 200);
+    }
+
+    public function updateUser(Request $request)
+    {
+        $attr = $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $imageUrl = $this->saveImage($request->image, 'profiles');
+
+        auth()->user()->update([
+            'name' => $attr['name'],
+            'iamge' => $imageUrl,
+        ]);
+
+        $response = new ApiResponse(true, 'User updated successfully.', auth()->user());
+        return response()->json($response, 200);
+
     }
 
 }
