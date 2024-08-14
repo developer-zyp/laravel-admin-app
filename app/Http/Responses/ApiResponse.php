@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Responses;
+use Illuminate\Database\Eloquent\Model;
 
-class ApiResponse
+class ApiResponse extends Model
 {
     public $status;
     public $message;

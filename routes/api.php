@@ -8,6 +8,8 @@ use App\Http\Controllers\EasyCookingApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Orion\Facades\Orion;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
 });
 
+Route::middleware('api_key')->group(function () {
+    Route::group(['as' => 'api.'], function () {
+        Orion::resource('posts', PostsController::class);
+    });
+});
+
 // Protected routes of product and logout
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -54,19 +62,19 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Post
-    Route::get('/posts', [PostController::class, 'index']);
-    Route::post('/posts', [PostController::class, 'store']);
-    Route::get('/posts/{id}', [PostController::class, 'show']);
-    Route::put('/posts/{id}', [PostController::class, 'update']);
-    Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+    // Route::get('/posts', [PostController::class, 'index']);
+    // Route::post('/posts', [PostController::class, 'store']);
+    // Route::get('/posts/{id}', [PostController::class, 'show']);
+    // Route::put('/posts/{id}', [PostController::class, 'update']);
+    // Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
-    // Comment
-    Route::get('/posts/{id}/comments', [CommentController::class, 'index']);
-    Route::post('/posts/{id}/comments', [CommentController::class, 'store']);
-    Route::put('/comments/{id}', [CommentController::class, 'update']);
-    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+    // // Comment
+    // Route::get('/posts/{id}/comments', [CommentController::class, 'index']);
+    // Route::post('/posts/{id}/comments', [CommentController::class, 'store']);
+    // Route::put('/comments/{id}', [CommentController::class, 'update']);
+    // Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 
-    // Like
-    Route::get('/posts/{id}/likes', [LikeController::class, 'likeorunlike']);
+    // // Like
+    // Route::get('/posts/{id}/likes', [LikeController::class, 'likeorunlike']);
 
 });

@@ -23,3 +23,15 @@ Route::prefix('easycooking')->name('easycooking.')->group(function () {
     Route::get('/recipes/{id}', [EasyCookingController::class, 'show'])->name('recipes.details');
     
 });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
